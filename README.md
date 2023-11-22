@@ -1,5 +1,9 @@
 # <u>Wildlife Conservation with Computer Vision</u>
-_This project aims to contribute to wildlife conservation efforts by utilizing computer vision and machine learning techniques. The system is designed to identify and track endangered species in the wild through the analysis of images and videos captured by wildlife cameras or drones._
+` This project 
+aims to contribute to wildlife conservation efforts by utilizing computer vision and machine learning techniques. The system is designed to identify and track endangered species in the wild through the analysis of images and videos captured by wildlife cameras or drones.`
+
+<img width="959" alt="Screenshot 2023-11-22 105315" src="https://github.com/xyferr/BDCOE-final/assets/144813650/47b919b7-6341-4c44-b3dd-9ae1101fbf7f">
+
 
 ## Key Features
 - **🫎Species Identification:** Utilizes deep learning to classify and identify wildlife species present in images and videos.
@@ -23,7 +27,12 @@ _This project aims to contribute to wildlife conservation efforts by utilizing c
 │   ├── training/
 │   └── validation/
 ├── model/
+├── uploads/
 ├── .gitignore
+├── app.py
+├── Endagered.ipynb
+├── endagered.py
+├── main.py
 ├── README.md
 └── requirements.txt
 

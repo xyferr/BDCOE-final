@@ -19,13 +19,11 @@ _This project aims to contribute to wildlife conservation efforts by utilizing c
 ```plaintext
 .
 ├── data/
-│   ├── train/
-│   └── test/
-├── models/
-├── notebooks/
-├── src/
+│   ├── training/
+│   ├── training/
+│   └── validation/
+├── model/
 ├── .gitignore
-├── LICENSE
 ├── README.md
 └── requirements.txt
 

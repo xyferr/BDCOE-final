@@ -19,7 +19,7 @@ background_css = f"""
 st.markdown(background_css, unsafe_allow_html=True)
 st.title(":blue[⛔Endangered Animals🫏 Detection]")
 
-uploaded_file = st.file_uploader("Choose a wildlife image...", type="jpg")
+uploaded_file = st.file_uploader("Choose a wildlife image...", type=["jpg", "jpeg", "png", "webp", "avif"])
 
 if uploaded_file is not None:
     st.image(uploaded_file, caption="Uploaded Image.", use_column_width=True)

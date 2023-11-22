@@ -1,47 +1,56 @@
-import tensorflow as tf
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import GlobalAveragePooling2D, Dense
-from tensorflow.keras.optimizers import Adam 
+from tensorflow.keras.models import load_model
+from tensorflow.keras.preprocessing import image
+from tensorflow.keras.applications.mobilenet import preprocess_input
+from tensorflow.keras.applications.resnet50 import preprocess_input as resnet_preprocess_input
+from tensorflow.keras.applications.vgg16 import preprocess_input as vgg16_preprocess_input
+import numpy as np
 
 
-# Function to preprocess the image
-num_classes = 2
-def preprocess_image(img_path):
-    img = image.load_img(img_path, target_size=(224, 224))
+mobilenet_model = load_model(r'model\mobilenet_checkpoint_accuracy.h5') # Loading MobileNet model
+
+
+resnet50_model = load_model(r'model\resnet50_checkpoint_accuracy.h5') # Loading ResNet50 model
+
+
+vgg16_model = load_model(r'model\vgg16_checkpoint_accuracy.h5') # Loading VGG16 model
+
+
+def preprocess_image(model_name, img_path):
+    target_size = (224, 224)  
+
+    if model_name == 'mobilenet':
+        preprocess_func = preprocess_input
+    elif model_name == 'resnet50':
+        preprocess_func = resnet_preprocess_input
+    elif model_name == 'vgg16':
+        preprocess_func = vgg16_preprocess_input
+    else:
+        raise ValueError(f"Unsupported model: {model_name}")
+
+    img = image.load_img(img_path, target_size=target_size)
     img_array = image.img_to_array(img)
+    img_array = preprocess_func(img_array)
     img_array = np.expand_dims(img_array, axis=0)
-    img_array /= 255.0  # Normalize the image
     return img_array
 
-def create_mobilenet_model():
-    base_model = tf.keras.applications.MobileNetV2(input_shape=(224, 224, 3),
-                                                   include_top=False,
-                                                   weights='imagenet')
-    base_model.trainable = False
 
-    model = Sequential([
-        base_model,
-        GlobalAveragePooling2D(),
-        Dense(256, activation='relu'),
-        Dense(num_classes, activation='softmax')
-    ])
+#test_img_path = r'C:\Users\XYFER\Pictures\tiger.webp' # Testing image ka path
 
-    model.compile(optimizer=Adam(lr=0.0001), loss='categorical_crossentropy', metrics=['accuracy'])
-
-    return model
+# results ko hardcode karke dekhna hai
+def interpret_results(predictions):
+    if predictions[0][0] >= 0.5:
+        return "Class 1 (Not Endangered)"
+    else:
+        return "Class 0 (Endagered)"
 
 
-mobilenet_model = create_mobilenet_model()
+def get_predictions(img_path):
+    mobilenet_predictions = mobilenet_model.predict(preprocess_image('mobilenet', img_path))
+    resnet50_predictions = resnet50_model.predict(preprocess_image('resnet50', img_path))
+    vgg16_predictions = vgg16_model.predict(preprocess_image('vgg16', img_path))
 
-# Load the weights from the checkpoint file
-mobilenet_model.load_weights('mobilenet_checkpoint_accuracy.h5')
-
-# Preprocess an example image
-example_image_path = r'Testing\Endangered\African Wild Dog\22.jpeg'
-example_img_array = preprocess_image(example_image_path)
-
-# Make a prediction
-prediction = mobilenet_model.predict(example_img_array)
-
-# Display the result
-print("Prediction:", prediction)
+    return {
+        "MobileNet": interpret_results(mobilenet_predictions),
+        "ResNet50": interpret_results(resnet50_predictions),
+        "VGG16": interpret_results(vgg16_predictions)
+    }

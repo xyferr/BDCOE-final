@@ -9,12 +9,12 @@ app = FastAPI()
 @app.post("/predict")
 async def predict(file: UploadFile = File(...)):
     try:
-        # Save the file
+        # har uploaded file ko uploads folder me save karna
         file_path = 'uploads/' + file.filename
         with open(file_path, 'wb') as f:
             f.write(file.file.read())
 
-        # Get predictions using the logic from endangered.py
+        # getting prediction
         predictions = get_predictions(file_path)
 
         return {"result": predictions}

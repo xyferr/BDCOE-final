@@ -36,14 +36,14 @@ def preprocess_image(model_name, img_path):
 
 #test_img_path = r'C:\Users\XYFER\Pictures\tiger.webp' # Testing image ka path
 
-# results ko hardcode karke dekhna hai
+# results ko hardcode karne wala function
 def interpret_results(predictions):
     if predictions[0][0] >= 0.5:
         return "Class 1 (Not Endangered)"
     else:
         return "Class 0 (Endagered)"
 
-
+# frontend is function ko call karega
 def get_predictions(img_path):
     mobilenet_predictions = mobilenet_model.predict(preprocess_image('mobilenet', img_path))
     resnet50_predictions = resnet50_model.predict(preprocess_image('resnet50', img_path))

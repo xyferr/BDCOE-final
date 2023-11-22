@@ -1,23 +1,26 @@
 import streamlit as st
 import requests
 import time
-#Set background image using custom CSS
+
+# background image ke liye embedded css
 background_image = r"C:\ROHIT\CS\ML\projects\BDCOE-final\data\ele.jpg"
-background_css = f"""
+background_css = """
     <style>
-        .stApp {{
-            background-image: linear-gradient(
-            to bottom,
-            rgba(255, 255, 0, 0.5),
-            rgba(0, 0, 255, 0.5)
-            ), url("{background_image}");
-            background-size: initial;
-            
-        }}
+        .stApp {
+            background-image: url("https://www.teahub.io/photos/full/215-2159797_elephants-in-sundown.jpg");
+            background-size: cover;    
+        }
     </style>
 """
+
+# title ko box me likhne ke liye embedded css
 st.markdown(background_css, unsafe_allow_html=True)
-st.title(":blue[⛔Endangered Animals🫏 Detection]")
+st.markdown("""
+    <div style="background-color:#ede6e8; padding:5px; border-radius:5px;">
+        <h1 style="color:black; text-align:center;">⛔ Endangered  Animals🫏 Detection</h1>
+    </div>
+""", unsafe_allow_html=True)
+#st.title(":blue[⛔Endangered Animals🫏 Detection]")
 
 uploaded_file = st.file_uploader("Choose a wildlife image...", type=["jpg", "jpeg", "png", "webp", "avif"])
 
@@ -26,14 +29,14 @@ if uploaded_file is not None:
     st.write("")
     st.write("Classifying...")
 
-    # Upload image to the FastAPI backend
+    #  FastAPI backend ko image send karna post request ke dwara
     files = {'file': uploaded_file}
     response = requests.post("http://localhost:8000/predict", files=files)
 
-    # Display the result
+    # Result ko display karne wala function
     if response.status_code == 200:
         result = response.json()["result"]
-        st.success(f"The species is classified as: {result}")
+        st.markdown(f'<div style="background-color:#f0f0f0; padding:10px; border-radius:5px; font-size:18px;">{result}</div>', unsafe_allow_html=True)
     else:
         st.error("Error predicting the species. Please try again.")
 

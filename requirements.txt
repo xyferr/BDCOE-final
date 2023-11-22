@@ -1,0 +1,10 @@
+pandas
+numpy
+streamlit
+matplotlib
+scikit-image
+tensorflow
+tqdm
+glob2
+scikit-learn
+requests

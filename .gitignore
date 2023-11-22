@@ -1,4 +1,6 @@
-/data/
 /model/
 /venv/
 /uploads/
+/data/Testing/
+/data/Training/
+/data/Validation/
